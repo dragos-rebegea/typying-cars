@@ -1,0 +1,556 @@
+{
+    "name": "Typing Cars Testing",
+    "gasSchedule": "v3",
+    "steps": [
+        {
+            "step": "setState",
+            "accounts": {
+                "address:owner": {
+                    "nonce": "0",
+                    "balance": "0"
+                },
+                "address:player1": {
+                    "nonce": "0",
+                    "balance": "1000000000000000000"
+                },
+                "address:player2": {
+                    "nonce": "0",
+                    "balance": "1000000000000000000"
+                },
+                "address:player3": {
+                    "nonce": "0",
+                    "balance": "1000000000000000000"
+                }
+            },
+            "newAddresses": [
+                {
+                    "creatorAddress": "address:owner",
+                    "creatorNonce": "0",
+                    "newAddress": "sc:typing-cars"
+                }
+            ]
+        },
+        {
+            "step": "scDeploy",
+            "txId": "deploy",
+            "tx": {
+                "from": "address:owner",
+                "contractCode": "file:../output/typing-cars.wasm",
+                "arguments": [],
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "0",
+                "logs": [],
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "checkState",
+            "comment": "check initial state",
+            "accounts": {
+                "address:owner": {
+                    "nonce": "1",
+                    "balance": "0",
+                    "storage": {},
+                    "code": ""
+                },
+                "sc:typing-cars": {
+                    "nonce": "0",
+                    "balance": "0",
+                    "storage": {
+                        "str:total_players": "0",
+                        "str:total_races": "0"
+                    },
+                    "code": "file:../output/typing-cars.wasm"
+                },
+                "+": ""
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "register-player1",
+            "tx": {
+                "from": "address:player1",
+                "to": "sc:typing-cars",
+                "function": "register_player",
+                "arguments": [
+                    "str:player1",
+                    "1"
+                ],
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "0",
+                "logs": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "checkState",
+            "comment": "check player1 registered",
+            "accounts": {
+                "sc:typing-cars": {
+                    "nonce": "0",
+                    "balance": "0",
+                    "storage": {
+                        "str:total_players": "1",
+                        "str:player_address|address:player1": {
+                            "0-username": "str:player1",
+                            "1-avatar_id": "1",
+                            "2-rating": "1000",
+                            "3-total_races": "0",
+                            "4-wins": "0",
+                            "5-average_wpm": "0",
+                            "6-highest_wpm": "0"
+                        },
+                        "+": ""
+                    },
+                    "code": "file:../output/typing-cars.wasm"
+                },
+                "+": ""
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "register-player2",
+            "tx": {
+                "from": "address:player2",
+                "to": "sc:typing-cars",
+                "function": "register_player",
+                "arguments": [
+                    "str:player2",
+                    "2"
+                ],
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "0",
+                "logs": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "create-race",
+            "tx": {
+                "from": "address:player1",
+                "to": "sc:typing-cars",
+                "function": "create_race",
+                "arguments": [
+                    "2",
+                    "1",
+                    "1"
+                ],
+                "value": "100000000",
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": ["1"],
+                "status": "0",
+                "logs": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "checkState",
+            "comment": "check race created",
+            "accounts": {
+                "sc:typing-cars": {
+                    "nonce": "0",
+                    "balance": "100000000",
+                    "storage": {
+                        "str:total_races": "1",
+                        "str:race|u64:1": {
+                            "0-race_id": "1",
+                            "1-created_by": "address:player1",
+                            "2-max_participants": "2",
+                            "3-difficulty": "1",
+                            "4-text_id": "1",
+                            "5-status": "0", 
+                            "6-entry_fee": "100000000",
+                            "7-start_timestamp": "0",
+                            "8-end_timestamp": "0",
+                            "9-participants": [],
+                            "10-results": []
+                        },
+                        "+": ""
+                    },
+                    "code": "file:../output/typing-cars.wasm"
+                },
+                "+": ""
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "player2-join-race",
+            "tx": {
+                "from": "address:player2",
+                "to": "sc:typing-cars",
+                "function": "join_race",
+                "arguments": ["1"],
+                "value": "100000000",
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "0",
+                "logs": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "checkState",
+            "comment": "check race after player2 joined",
+            "accounts": {
+                "sc:typing-cars": {
+                    "nonce": "0",
+                    "balance": "200000000",
+                    "storage": {
+                        "str:race|u64:1": {
+                            "0-race_id": "1",
+                            "5-status": "0",
+                            "9-participants": ["address:player2"],
+                            "+": ""
+                        },
+                        "+": ""
+                    },
+                    "code": "file:../output/typing-cars.wasm"
+                },
+                "+": ""
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "player1-join-race",
+            "tx": {
+                "from": "address:player1",
+                "to": "sc:typing-cars",
+                "function": "join_race",
+                "arguments": ["1"],
+                "value": "100000000",
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "0",
+                "logs": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "checkState",
+            "comment": "check race active after both players joined",
+            "accounts": {
+                "sc:typing-cars": {
+                    "nonce": "0",
+                    "balance": "300000000",
+                    "storage": {
+                        "str:race|u64:1": {
+                            "5-status": "1",
+                            "7-start_timestamp": "*",
+                            "9-participants": ["address:player2", "address:player1"],
+                            "+": ""
+                        },
+                        "+": ""
+                    },
+                    "code": "file:../output/typing-cars.wasm"
+                },
+                "+": ""
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "player1-submit-result",
+            "tx": {
+                "from": "address:player1",
+                "to": "sc:typing-cars",
+                "function": "submit_result",
+                "arguments": [
+                    "1", 
+                    "70", 
+                    "95", 
+                    "120", 
+                    "str:proof1"
+                ],
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "0",
+                "logs": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "checkState",
+            "comment": "check race after player1 submitted result",
+            "accounts": {
+                "sc:typing-cars": {
+                    "nonce": "0",
+                    "balance": "300000000",
+                    "storage": {
+                        "str:race|u64:1": {
+                            "5-status": "1",
+                            "10-results": [
+                                {
+                                    "0-player": "address:player1",
+                                    "1-wpm": "70",
+                                    "2-accuracy": "95",
+                                    "3-time_taken": "120",
+                                    "4-crypto_proof": "str:proof1"
+                                }
+                            ],
+                            "+": ""
+                        },
+                        "str:player_address|address:player1": {
+                            "3-total_races": "1",
+                            "5-average_wpm": "70",
+                            "6-highest_wpm": "70",
+                            "+": ""
+                        },
+                        "+": ""
+                    },
+                    "code": "file:../output/typing-cars.wasm"
+                },
+                "+": ""
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "player2-submit-result",
+            "tx": {
+                "from": "address:player2",
+                "to": "sc:typing-cars",
+                "function": "submit_result",
+                "arguments": [
+                    "1", 
+                    "60", 
+                    "90", 
+                    "130", 
+                    "str:proof2"
+                ],
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "0",
+                "logs": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "checkState",
+            "comment": "check race completed after both players submitted results",
+            "accounts": {
+                "sc:typing-cars": {
+                    "nonce": "0",
+                    "balance": "300000000",
+                    "storage": {
+                        "str:race|u64:1": {
+                            "5-status": "2",
+                            "8-end_timestamp": "*",
+                            "10-results": [
+                                {
+                                    "0-player": "address:player1",
+                                    "1-wpm": "70",
+                                    "2-accuracy": "95",
+                                    "3-time_taken": "120",
+                                    "4-crypto_proof": "str:proof1"
+                                },
+                                {
+                                    "0-player": "address:player2",
+                                    "1-wpm": "60",
+                                    "2-accuracy": "90",
+                                    "3-time_taken": "130",
+                                    "4-crypto_proof": "str:proof2"
+                                }
+                            ],
+                            "+": ""
+                        },
+                        "str:player_address|address:player2": {
+                            "3-total_races": "1",
+                            "5-average_wpm": "60",
+                            "6-highest_wpm": "60",
+                            "+": ""
+                        },
+                        "+": ""
+                    },
+                    "code": "file:../output/typing-cars.wasm"
+                },
+                "+": ""
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "create-race-2",
+            "tx": {
+                "from": "address:player1",
+                "to": "sc:typing-cars",
+                "function": "create_race",
+                "arguments": [
+                    "2",
+                    "1",
+                    "1"
+                ],
+                "value": "100000000",
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": ["2"],
+                "status": "0",
+                "logs": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "cancel-race",
+            "tx": {
+                "from": "address:player1",
+                "to": "sc:typing-cars",
+                "function": "cancel_race",
+                "arguments": ["2"],
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "0",
+                "logs": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "checkState",
+            "comment": "check race cancelled",
+            "accounts": {
+                "sc:typing-cars": {
+                    "nonce": "0",
+                    "balance": "300000000",
+                    "storage": {
+                        "str:race|u64:2": {
+                            "5-status": "3",
+                            "+": ""
+                        },
+                        "+": ""
+                    },
+                    "code": "file:../output/typing-cars.wasm"
+                },
+                "+": ""
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "try-cancel-active-race",
+            "tx": {
+                "from": "address:player1",
+                "to": "sc:typing-cars",
+                "function": "cancel_race",
+                "arguments": ["1"],
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "4",
+                "message": "str:Race can only be cancelled during registration",
+                "logs": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "create-race-3",
+            "tx": {
+                "from": "address:player1",
+                "to": "sc:typing-cars",
+                "function": "create_race",
+                "arguments": [
+                    "2",
+                    "1",
+                    "1"
+                ],
+                "value": "100000000",
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": ["3"],
+                "status": "0",
+                "logs": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "player2-try-cancel-others-race",
+            "tx": {
+                "from": "address:player2",
+                "to": "sc:typing-cars",
+                "function": "cancel_race",
+                "arguments": ["3"],
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "4",
+                "message": "str:Only race creator can cancel",
+                "logs": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "player3-try-actions-without-registration",
+            "tx": {
+                "from": "address:player3",
+                "to": "sc:typing-cars",
+                "function": "submit_result",
+                "arguments": [
+                    "3", 
+                    "70", 
+                    "95", 
+                    "120", 
+                    "str:proof3"
+                ],
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "4",
+                "message": "str:Player not registered",
+                "logs": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        }
+    ]
+} 

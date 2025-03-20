@@ -1,0 +1,1 @@
+/Users/dragos/repos/typying-cars/typing-cars/target/wasm32-unknown-unknown/release/typing_cars_wasm.wasm: /Users/dragos/repos/typying-cars/typing-cars/src/typing_cars.rs /Users/dragos/repos/typying-cars/typing-cars/wasm/src/lib.rs

@@ -1,0 +1,393 @@
+{
+    "buildInfo": {
+        "rustc": {
+            "version": "1.85.0",
+            "commitHash": "4d91de4e48198da2e33413efdcd9cd2cc0c46688",
+            "commitDate": "2025-02-17",
+            "channel": "Stable",
+            "short": "rustc 1.85.0 (4d91de4e4 2025-02-17)"
+        },
+        "contractCrate": {
+            "name": "typing-cars",
+            "version": "0.0.0"
+        },
+        "framework": {
+            "name": "multiversx-sc",
+            "version": "0.56.1"
+        }
+    },
+    "docs": [
+        "An empty contract. To be used as a template when starting a new contract from scratch."
+    ],
+    "name": "TypingCars",
+    "constructor": {
+        "inputs": [],
+        "outputs": []
+    },
+    "upgradeConstructor": {
+        "inputs": [],
+        "outputs": []
+    },
+    "endpoints": [
+        {
+            "name": "register_player",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [
+                {
+                    "name": "username",
+                    "type": "bytes"
+                },
+                {
+                    "name": "avatar_id",
+                    "type": "u32"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "update_profile",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "username",
+                    "type": "bytes"
+                },
+                {
+                    "name": "avatar_id",
+                    "type": "u32"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "getPlayerProfile",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "PlayerProfile"
+                }
+            ]
+        },
+        {
+            "name": "getTotalPlayers",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "createRace",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [
+                {
+                    "name": "max_participants",
+                    "type": "u32"
+                },
+                {
+                    "name": "difficulty",
+                    "type": "u8"
+                },
+                {
+                    "name": "text_id",
+                    "type": "u32"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "joinRace",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [
+                {
+                    "name": "race_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "submitResult",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "race_id",
+                    "type": "u64"
+                },
+                {
+                    "name": "wpm",
+                    "type": "u32"
+                },
+                {
+                    "name": "accuracy",
+                    "type": "u32"
+                },
+                {
+                    "name": "completion_time",
+                    "type": "u64"
+                },
+                {
+                    "name": "crypto_proof",
+                    "type": "bytes"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "finalizeRace",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "race_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "cancelRace",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "race_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "getRaceDetails",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "race_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "RaceDetails"
+                }
+            ]
+        },
+        {
+            "name": "getRaceResults",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "race_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "List<RaceResult>"
+                }
+            ]
+        },
+        {
+            "name": "getTotalRaces",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
+        }
+    ],
+    "esdtAttributes": [],
+    "hasCallback": false,
+    "types": {
+        "EgldOrEsdtTokenPayment": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "token_identifier",
+                    "type": "EgldOrEsdtTokenIdentifier"
+                },
+                {
+                    "name": "token_nonce",
+                    "type": "u64"
+                },
+                {
+                    "name": "amount",
+                    "type": "BigUint"
+                }
+            ]
+        },
+        "PlayerProfile": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "address",
+                    "type": "Address"
+                },
+                {
+                    "name": "username",
+                    "type": "bytes"
+                },
+                {
+                    "name": "avatar_id",
+                    "type": "u32"
+                },
+                {
+                    "name": "rating",
+                    "type": "u32"
+                },
+                {
+                    "name": "total_races",
+                    "type": "u64"
+                },
+                {
+                    "name": "wins",
+                    "type": "u64"
+                },
+                {
+                    "name": "average_wpm",
+                    "type": "u32"
+                },
+                {
+                    "name": "highest_wpm",
+                    "type": "u32"
+                },
+                {
+                    "name": "registration_timestamp",
+                    "type": "u64"
+                },
+                {
+                    "name": "last_active",
+                    "type": "u64"
+                }
+            ]
+        },
+        "RaceDetails": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "race_id",
+                    "type": "u64"
+                },
+                {
+                    "name": "created_by",
+                    "type": "Address"
+                },
+                {
+                    "name": "entry_fee",
+                    "type": "EgldOrEsdtTokenPayment"
+                },
+                {
+                    "name": "max_participants",
+                    "type": "u32"
+                },
+                {
+                    "name": "participants",
+                    "type": "List<Address>"
+                },
+                {
+                    "name": "status",
+                    "type": "RaceStatus"
+                },
+                {
+                    "name": "difficulty",
+                    "type": "u8"
+                },
+                {
+                    "name": "text_id",
+                    "type": "u32"
+                },
+                {
+                    "name": "start_timestamp",
+                    "type": "u64"
+                },
+                {
+                    "name": "end_timestamp",
+                    "type": "u64"
+                },
+                {
+                    "name": "results",
+                    "type": "List<RaceResult>"
+                }
+            ]
+        },
+        "RaceResult": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "player",
+                    "type": "Address"
+                },
+                {
+                    "name": "wpm",
+                    "type": "u32"
+                },
+                {
+                    "name": "accuracy",
+                    "type": "u32"
+                },
+                {
+                    "name": "completion_time",
+                    "type": "u64"
+                },
+                {
+                    "name": "position",
+                    "type": "u8"
+                },
+                {
+                    "name": "reward_amount",
+                    "type": "EgldOrEsdtTokenPayment"
+                },
+                {
+                    "name": "verified",
+                    "type": "bool"
+                },
+                {
+                    "name": "crypto_proof",
+                    "type": "bytes"
+                }
+            ]
+        },
+        "RaceStatus": {
+            "type": "enum",
+            "variants": [
+                {
+                    "name": "Registration",
+                    "discriminant": 0
+                },
+                {
+                    "name": "Active",
+                    "discriminant": 1
+                },
+                {
+                    "name": "Completed",
+                    "discriminant": 2
+                },
+                {
+                    "name": "Cancelled",
+                    "discriminant": 3
+                }
+            ]
+        }
+    }
+}
