@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #00f0ff;
+  --color-primary-dark: #008e99;
+  --color-secondary: #ff00d4;
+  --color-secondary-dark: #a1008a;
+  --color-bg: #0a0a0a;
+  --color-bg-light: #1a1a1a;
+  --color-text: #ffffff;
+  --color-text-muted: #9ca3af;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@layer base {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #1a1a1a;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #444;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background focus:ring-opacity-50;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-cyan-500 to-cyan-400 text-white font-medium py-2 px-4 rounded-md transition-all duration-200 
+    hover:from-cyan-400 hover:to-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-opacity-50 
+    disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-800 text-white font-medium py-2 px-4 rounded-md border border-gray-700
+    hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50
+    disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-accent {
+    @apply btn bg-accent text-white hover:bg-accent-light focus:ring-accent;
+  }
+  
+  .btn-outline {
+    @apply btn border-2 border-primary text-primary hover:bg-primary hover:text-background-dark focus:ring-primary;
+  }
+  
+  .btn-selector {
+    @apply bg-gray-800 text-gray-300 font-medium py-2 rounded-md border border-gray-700
+    hover:bg-gray-700 transition-all duration-200 focus:outline-none;
+  }
+  
+  .btn-selector-active {
+    @apply bg-cyan-800/30 text-cyan-300 border-cyan-700;
+  }
+  
+  .card {
+    @apply bg-gray-800 rounded-lg shadow-md p-6;
+  }
+  
+  .card-glowing {
+    @apply card border-primary border-opacity-50 shadow-neon;
+  }
+  
+  .input {
+    @apply bg-background-light border-2 border-primary border-opacity-20 rounded-md px-4 py-2 focus:border-primary focus:outline-none text-white placeholder-gray-500;
+  }
+  
+  .form-input {
+    @apply bg-gray-900 border border-gray-700 rounded-md px-4 py-2 w-full focus:outline-none 
+    focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder-gray-500;
+  }
+}
+
+@layer utilities {
+  .text-primary {
+    color: var(--color-primary);
+  }
+
+  .text-secondary {
+    color: var(--color-secondary);
+  }
+
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+
+  .bg-secondary {
+    background-color: var(--color-secondary);
+  }
+
+  .neon-text {
+    color: var(--color-primary);
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.7),
+                 0 0 20px rgba(0, 240, 255, 0.5);
+  }
+
+  .neon-text-secondary {
+    color: var(--color-secondary);
+    text-shadow: 0 0 10px rgba(255, 0, 212, 0.7),
+                 0 0 20px rgba(255, 0, 212, 0.5);
+  }
+
+  .shadow-neon {
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5),
+                0 0 30px rgba(0, 240, 255, 0.3);
+  }
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%);
+  background-size: cover;
+  z-index: -1;
+}
