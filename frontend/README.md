@@ -1,46 +1,73 @@
-# Getting Started with Create React App
+# @multiversx/template-dapp
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The **MultiversX dApp Template**, built using [React.js](https://reactjs.org/) and [Typescript](https://www.typescriptlang.org/).
+It's a basic implementation of [@multiversx/sdk-dapp](https://www.npmjs.com/package/@multiversx/sdk-dapp), providing the basics for MultiversX authentication and TX signing.
 
-## Available Scripts
+See [Dapp template](https://template-dapp.multiversx.com/) for live demo.
 
-In the project directory, you can run:
+## Requirements
 
-### `npm start`
+- Node.js version 16.20.0+
+- Npm version 8.19.4+
 
-Runs the app in the development mode.\
+## Getting Started
+
+The dapp is a client side only project and is built using the [Create React App](https://create-react-app.dev) scripts.
+
+### Instalation and running
+
+### Step 1. Install modules
+
+From a terminal, navigate to the project folder and run:
+
+```bash
+yarn install
+```
+
+### Step 2. Running in development mode
+
+In the project folder run:
+
+```bash
+yarn start:devnet
+yarn start:testnet
+yarn start:mainnet
+```
+
+This will start the React app in development mode, using the configs found in the `vite.config.ts` file.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npm test`
+> **Note:** 
+While in development, to test the passkeys provider use the following command:
+`open -a Google\ Chrome --args --ignore-certificate-errors --ignore-urlfetcher-cert-requests`
+Make sure to close all instances of Chrome after the development session.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Step 3. Build for testing and production use
 
-### `npm run build`
+A build of the app is necessary to deploy for testing purposes or for production use.
+To build the project run:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+yarn build:devnet
+yarn build:testnet
+yarn build:mainnet
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Roadmap
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+See the [open issues](https://github.com/multiversx/mx-template-dapp/issues) for a list of proposed features (and known issues).
 
-### `npm run eject`
+## Contributing
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+One can contribute by creating _pull requests_, or by opening _issues_ for discovered bugs or desired features.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request

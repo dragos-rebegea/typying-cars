@@ -1,66 +1,89 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { store } from './store';
-import MultiversxProvider from './providers/MultiversxProvider';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import RaceCreation from './pages/RaceCreation';
-import RacingArena from './pages/RacingArena';
-import ProfilePage from './pages/ProfilePage';
-import NotFoundPage from './pages/NotFoundPage';
-import LandingPage from './pages/LandingPage';
-import Layout from './components/Layout';
-import ProtectedRoute from './components/ProtectedRoute';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-function App() {
+import {
+  AxiosInterceptorContext, // using this is optional
+  DappProvider,
+  Layout,
+  TransactionsToastList,
+  NotificationModal,
+  SignTransactionsModals
+  // uncomment this to use the custom transaction tracker
+  // TransactionsTracker
+} from 'components';
+
+import {
+  apiTimeout,
+  walletConnectV2ProjectId,
+  environment,
+  sampleAuthenticatedDomains
+} from 'config';
+import { RouteNamesEnum } from 'localConstants';
+import { PageNotFound, Unlock } from 'pages';
+import { routes } from 'routes';
+import { BatchTransactionsContextProvider } from 'wrappers';
+
+const AppContent = () => {
   return (
-    <Provider store={store}>
-      <MultiversxProvider>
-        <Router>
+    <DappProvider
+      environment={environment}
+      customNetworkConfig={{
+        name: 'customConfig',
+        apiTimeout,
+        walletConnectV2ProjectId
+      }}
+      dappConfig={{
+        shouldUseWebViewProvider: true,
+        logoutRoute: RouteNamesEnum.unlock
+      }}
+      customComponents={{
+        transactionTracker: {
+          // uncomment this to use the custom transaction tracker
+          // component: TransactionsTracker,
+          props: {
+            onSuccess: (sessionId: string) => {
+              console.log(`Session ${sessionId} successfully completed`);
+            },
+            onFail: (sessionId: string, errorMessage: string) => {
+              console.log(`Session ${sessionId} failed. ${errorMessage ?? ''}`);
+            }
+          }
+        }
+      }}
+    >
+      <AxiosInterceptorContext.Listener>
+        <Layout>
+          <TransactionsToastList />
+          <NotificationModal />
+          <SignTransactionsModals />
           <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route element={<Layout />}>
-              <Route 
-                path="/dashboard" 
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } 
+            <Route path={RouteNamesEnum.unlock} element={<Unlock />} />
+            {routes.map((route) => (
+              <Route
+                path={route.path}
+                key={`route-key-'${route.path}`}
+                element={<route.component />}
               />
-              <Route 
-                path="/create-race" 
-                element={
-                  <ProtectedRoute>
-                    <RaceCreation />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/race/:raceId" 
-                element={
-                  <ProtectedRoute>
-                    <RacingArena />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/profile" 
-                element={
-                  <ProtectedRoute>
-                    <ProfilePage />
-                  </ProtectedRoute>
-                } 
-              />
-            </Route>
-            <Route path="*" element={<NotFoundPage />} />
+            ))}
+            <Route path='*' element={<PageNotFound />} />
           </Routes>
-        </Router>
-      </MultiversxProvider>
-    </Provider>
+        </Layout>
+      </AxiosInterceptorContext.Listener>
+    </DappProvider>
   );
-}
+};
 
-export default App;
+export const App = () => {
+  return (
+    <AxiosInterceptorContext.Provider>
+      <AxiosInterceptorContext.Interceptor
+        authenticatedDomains={sampleAuthenticatedDomains}
+      >
+        <Router>
+          <BatchTransactionsContextProvider>
+            <AppContent />
+          </BatchTransactionsContextProvider>
+        </Router>
+      </AxiosInterceptorContext.Interceptor>
+    </AxiosInterceptorContext.Provider>
+  );
+};
